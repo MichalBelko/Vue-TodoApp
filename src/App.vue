@@ -70,6 +70,56 @@ export default {
   cursor: pointer;
   width: 150px;
 }
+.form-control {
+  position: relative;
+  margin: 20px 0 40px;
+  width: 300px;
+}
+
+.form-control input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px black solid;
+  display: block;
+  width: 100%;
+  padding: 15px 0;
+  font-size: 15px;
+  color: black;
+  caret-color: black;
+}
+
+.form-control input:focus,
+.form-control input:valid {
+  outline: 0;
+}
+.form-control input:valid {
+  border-bottom: 2px black solid;
+}
+
+.app-form {
+  display: block;
+  width: 30%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.form-control label {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  pointer-events: none;
+  font-weight: bold;
+}
+.form-control label span {
+  display: inline-block;
+  font-size: 18px;
+  min-width: 5px;
+  transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.form-control input:focus + label span,
+.form-control input:valid + label span {
+  transform: translateY(-30px);
+}
 .todo-create-btn-container {
   margin-top: 25px;
   display: flex;

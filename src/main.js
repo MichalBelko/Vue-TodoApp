@@ -1,4 +1,16 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-createApp(App).mount('#app')
+createApp(App).mount("#app");
+
+const labels = document.querySelectorAll(".form-control label");
+
+labels.forEach((label) => {
+  label.innerHTML = label.innerText
+    .split("")
+    .map(
+      (letter, idx) =>
+        `<span style="transition-delay:${idx * 50}ms">${letter}</span>`
+    )
+    .join("");
+});
