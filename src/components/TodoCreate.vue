@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import Modal from "./Modal.vue";
+import Modal from "@/components/Modal";
 export default {
+  emits: ["formSubmitted"],
   components: {
     Modal,
   },
@@ -38,29 +39,29 @@ export default {
   },
   computed: {
     isFormValid() {
-      if (this.form.title.length > 8 && this.form.description.length > 10) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.form.title.length > 8 && this.form.description.length > 10
+        ? true
+        : false;
+    },
+    modal() {
+      return this.$refs.modal;
     },
   },
   methods: {
-    openModal() {
-      this.isOpen = true;
-    },
     submitForm() {
       if (this.isFormValid) {
         this.formError = "";
         this.$emit("formSubmitted", { ...this.form });
-        this.$refs.modal.close();
-
-        this.form.title = "";
-        this.form.description = "";
+        this.modal.close();
+        this.resetForm();
       } else {
         this.formError =
-          "Title needs to be longer than 8 chars and description longer than 10 chars";
+          "Form Error! Title needs to be longer than 8 chracters and description longer than 10 characters!";
       }
+    },
+    resetForm() {
+      this.form.title = "";
+      this.form.description = "";
     },
   },
 };

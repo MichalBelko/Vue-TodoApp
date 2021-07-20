@@ -10,21 +10,24 @@
 </template>
 
 <script>
-import TodoList from "./components/TodoList.vue";
-import TodoCreate from "./components/TodoCreate.vue";
+import TodoList from "@/components/TodoList";
+import TodoCreate from "@/components/TodoCreate";
 import store from "@/store";
-
 export default {
-  name: "App",
-  components: { TodoList, TodoCreate },
+  name: "app",
+  components: {
+    TodoList,
+    TodoCreate,
+  },
   data() {
     return {
       todos: store.state.todos,
     };
   },
+
   methods: {
     createTodo(todo) {
-      store.createTodo(todo);
+      store.dispatch("createTodo", todo);
     },
   },
 };

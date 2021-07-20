@@ -19,11 +19,11 @@
     <form class="app-form2">
       <div class="form-control2">
         <label>Title</label>
-        <input type="text" required :value="title" />
+        <input type="text" required v-model="todo.title" />
       </div>
       <div class="form-control2">
         <label>Description</label>
-        <textarea cols="30" rows="2" :value="description"></textarea>
+        <textarea cols="30" rows="2" v-model="todo.description"></textarea>
       </div>
       <button class="TodoItemBtn is-warning" @click.prevent="editTodo">
         Update
@@ -36,18 +36,43 @@
 </template>
 
 <script>
+import store from "@/store";
 export default {
-  props: ["title", "description"],
+  // props: ['title', 'description'],
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+      default: "Default Description",
+    },
+    _id: {
+      type: String,
+      required: true,
+    },
+    // Array, Object, String, Number, Boolean, Function
+  },
   data() {
     return {
       editMode: false,
+      todo: {
+        _id: this._id,
+        title: this.title,
+        description: this.description,
+      },
     };
   },
   methods: {
     editTodo() {
-      this.editMode = true;
+      store.dispatch("updateTodo", { ...this.todo });
+      this.editMode = false;
     },
-    deleteTodo() {},
+    deleteTodo() {
+      alert("deleting todo!");
+    },
   },
 };
 </script>
