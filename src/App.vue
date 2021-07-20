@@ -4,41 +4,29 @@
       <TodoList :todos="todos" />
     </div>
     <div class="todo-create-btn-container">
-      <Modal />
+      <TodoCreate @formSubmitted="createTodo" />
     </div>
   </div>
 </template>
 
 <script>
 import TodoList from "./components/TodoList.vue";
-import Modal from "./components/Modal.vue";
+import TodoCreate from "./components/TodoCreate.vue";
+import store from "@/store";
 
 export default {
   name: "App",
-  components: { TodoList, Modal },
+  components: { TodoList, TodoCreate },
   data() {
     return {
-      todos: [
-        {
-          _id: "1",
-          title: "Walk the dog",
-          description: "Go to forest near the Zoo",
-        },
-
-        {
-          _id: "2",
-          title: " Go Shopping",
-          description: "Buy bread, milk, butter and water",
-        },
-        {
-          _id: "3",
-          title: "Learn programming",
-          description: "Learn vue Router and fetching data",
-        },
-      ],
+      todos: store.state.todos,
     };
   },
-  methods: {},
+  methods: {
+    createTodo(todo) {
+      store.createTodo(todo);
+    },
+  },
 };
 </script>
 
@@ -48,6 +36,7 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -57,35 +46,77 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   flex-direction: column;
+  padding: 10vh 0;
+}
+
+button:focus,
+button:active {
+  border: none;
+  outline: none;
+}
+.ripple {
+  font-size: 20px;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #47ca47;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  position: relative;
+  overflow: hidden;
 }
 .app-btn {
   font-size: 20px;
   padding: 12px;
   border-radius: 5px;
-  background-color: fuchsia;
+  background-color: #ff00ff;
   font-weight: bold;
   color: white;
   cursor: pointer;
   width: 150px;
+  transition: all 0s 50ms ease-out;
+}
+.app-btn:hover {
+  transform: scale(1.02);
+  cursor: pointer;
 }
 .form-control {
   position: relative;
   margin: 20px 0 40px;
-  width: 300px;
+  width: 400px;
+}
+.ripple .circle {
+  position: absolute;
+  background-color: #259c25;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: scale 0.5s ease-out;
+  color: white;
+}
+
+@keyframes scale {
+  to {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
 }
 
 .form-control input {
   background-color: transparent;
   border: 0;
-  border-bottom: 1px black solid;
+  border-bottom: 1px #000000 solid;
   display: block;
   width: 100%;
   padding: 15px 0;
   font-size: 15px;
-  color: black;
-  caret-color: black;
+  color: #000000;
+  caret-color: #000000;
 }
 
 .form-control input:focus,
@@ -97,7 +128,6 @@ export default {
 }
 
 .app-form {
-  display: block;
   width: 30%;
   margin: 0 auto;
   padding: 0 20px;

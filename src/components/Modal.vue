@@ -1,51 +1,36 @@
 <template>
-  <div class="todo-create-btn-container">
-    <div class="app-btn" @click="openModal">
-      Create
-    </div>
+  <div class="app-btn" @click="openModal">
+    Create
   </div>
   <div class="modal" :class="{ isActive: isOpen }" @click.self="isOpen = false">
     <div class="modal-content">
-      <span class="close" @click="isOpen = false">&times;</span>
-      <form class="app-form">
-        <div class="form-control">
-          <input type="text" required />
-          <label>Title</label>
-          <!-- <label>
-            <span style="transition-delay: 0ms">E</span>
-              <span style="transition-delay: 50ms">m</span>
-              <span style="transition-delay: 100ms">a</span>
-              <span style="transition-delay: 150ms">i</span>
-              <span style="transition-delay: 200ms">l</span>
-        </label> -->
-        </div>
-        <div class="form-control">
-          <input type="text" required />
-          <label>Description</label>
-        </div>
-        <button class="app-button is-primary" type="button">
-          Create
-        </button>
-      </form>
+      <span class="close" @click="close">&times;</span>
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  // props: ["close"],
   data() {
     return {
       isOpen: false,
     };
   },
+  watch: {
+    close(isClose) {
+      if (isClose && this.isOpen) {
+        this.isOpen = false;
+      }
+    },
+  },
   methods: {
     openModal() {
       this.isOpen = true;
-      const modal = document.querySelector(".modal");
-
-      if (modal.classList.contains("isActive")) {
-        console.log("dasdasda");
-      }
+    },
+    close() {
+      this.isOpen = false;
     },
   },
 };
@@ -55,7 +40,6 @@ export default {
 .modal.isActive {
   display: block;
 }
-
 .modal {
   display: none;
   background-color: rgba(0, 0, 0, 0.404);
@@ -74,7 +58,7 @@ export default {
   position: absolute;
   top: 5px;
   right: 15px;
-  font-size: 30px;
+  font-size: 70px;
   font-weight: bold;
 }
 .close:hover {
@@ -84,19 +68,5 @@ export default {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 30px;
-
-  position: relative;
-}
-
-.app-button {
-  font-size: 20px;
-  padding: 12px;
-  border-radius: 5px;
-  background-color: #47ca47;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  width: 150px;
-  border: none;
 }
 </style>
