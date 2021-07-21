@@ -1,34 +1,75 @@
 <template>
-  <div class="todo-container">
-    <div class="flex-wrapper">
-      <TodoList :todos="todos" />
+  <div class="container">
+    <Header
+      :showAddTask="showAddTask"
+      title="Task tracker"
+      @toggle-add-task="toggleAddTask"
+    />
+    <div v-if="showAddTask">
+      <AddTask @add-task="addTask" />
     </div>
-    <div class="todo-create-btn-container">
-      <TodoCreate @formSubmitted="createTodo" />
-    </div>
+    <Tasks
+      :tasks="tasks"
+      @delete-task="deleteTask"
+      @toggle-reminder="toggleReminder"
+    />
   </div>
 </template>
 
 <script>
-import TodoList from "@/components/TodoList";
-import TodoCreate from "@/components/TodoCreate";
-import store from "@/store";
+import Header from "./components/Header.vue";
+import Tasks from "./components/Tasks.vue";
+import AddTask from "./components/AddTask.vue";
+
 export default {
   name: "app",
-  components: {
-    TodoList,
-    TodoCreate,
-  },
+  components: { Header, Tasks, AddTask },
   data() {
     return {
-      todos: store.state.todos,
+      tasks: [],
+      showAddTask: false,
     };
   },
-
   methods: {
-    createTodo(todo) {
-      store.dispatch("createTodo", todo);
+    toggleAddTask() {
+      this.showAddTask = !this.showAddTask;
     },
+    addTask(task) {
+      this.showAddTask = false;
+      this.tasks.push(task);
+    },
+    deleteTask(id) {
+      this.tasks = this.tasks.filter(function(task) {
+        return task.id !== id;
+      });
+    },
+    toggleReminder(id) {
+      this.tasks = this.tasks.map(function(task) {
+        return task.id === id ? { ...task, reminder: !task.reminder } : task;
+      });
+    },
+  },
+  created() {
+    this.tasks = [
+      {
+        id: 1,
+        text: "Doctors Appointment",
+        day: "March 1st at 2:30pm",
+        reminder: true,
+      },
+      {
+        id: 2,
+        text: "Meeting at school",
+        day: "March 3rd at 1:30pm",
+        reminder: true,
+      },
+      {
+        id: 3,
+        text: "Food Shopping",
+        day: "March 3rd  at 11:00am",
+        reminder: false,
+      },
+    ];
   },
 };
 </script>
@@ -40,136 +81,35 @@ export default {
   box-sizing: border-box;
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  flex-direction: column;
-  padding: 10vh 0;
-}
-
-button:focus,
-button:active {
-  border: none;
+input:focus,
+input:active {
   outline: none;
-}
-.ripple {
-  font-size: 20px;
-  padding: 12px;
-  border-radius: 5px;
-  background-color: #47ca47;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  width: 150px;
   border: none;
-  position: relative;
-  overflow: hidden;
 }
-.app-btn {
-  font-size: 20px;
-  padding: 12px;
+.container {
+  max-width: 500px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid rgb(99, 121, 139);
   border-radius: 5px;
-  background-color: #ff00ff;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  width: 150px;
-  transition: all 0s 50ms ease-out;
+  padding: 30px;
 }
-.app-btn:hover {
-  transform: scale(1.02);
-  cursor: pointer;
+.form-control-check input {
+  flex: 2;
+  height: 20px;
 }
-.form-control {
-  position: relative;
-  margin: 20px 0 40px;
-  width: 400px;
-}
-.ripple .circle {
-  position: absolute;
-  background-color: #259c25;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: scale 0.5s ease-out;
-  color: white;
-}
-
-@keyframes scale {
-  to {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
-  }
-}
-
-.form-control input {
-  background-color: transparent;
-  border: 0;
-  border-bottom: 1px #000000 solid;
-  display: block;
-  width: 100%;
-  padding: 15px 0;
-  font-size: 15px;
-  color: #000000;
-  caret-color: #000000;
-}
-
-.form-control input:focus,
-.form-control input:valid {
-  outline: 0;
-}
-.form-control input:valid {
-  border-bottom: 2px black solid;
-}
-
-.app-form {
-  width: 30%;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-.form-control label {
-  position: absolute;
-  top: 15px;
-  left: 0;
-  pointer-events: none;
-  font-weight: bold;
-}
-.form-control label span {
+.btn {
   display: inline-block;
-  font-size: 18px;
-  min-width: 5px;
-  transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.form-control input:focus + label span,
-.form-control input:valid + label span {
-  transform: translateY(-30px);
-}
-.todo-create-btn-container {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-.todo-container {
-  width: 500px;
-  padding: 10px;
-  height: auto;
-  background-color: #ededed;
-  box-shadow: 6px 6px 5px 2px rgb(107, 107, 107), 8px 8px 10px 5px black;
+  background-color: green;
+  border: none;
+  color: white;
   border-radius: 5px;
-}
-.flex-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
