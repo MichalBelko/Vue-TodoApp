@@ -70,6 +70,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: transparent;
 }
 .form-control label {
   display: block;
@@ -77,13 +78,13 @@ export default {
 }
 .form-control input {
   width: 100%;
-  height: 40px;
-  margin: 5px;
-  padding: 3px 7px;
+  height: 30px;
+  padding: 3px 3px;
   font-size: 17px;
   border: none;
   border-bottom: 1px solid black;
   caret-color: red;
+  background-color: transparent;
 }
 .form-control {
   margin: 20px 0;

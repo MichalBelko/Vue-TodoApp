@@ -1,5 +1,7 @@
 <template>
-  <button @click="onClick" class="btn">{{ text }}</button>
+  <button @click="onClick" class="btn">
+    <span>{{ text }}</span>
+  </button>
 </template>
 
 <script>
@@ -17,4 +19,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.btn {
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: Arial;
+}
+</style>

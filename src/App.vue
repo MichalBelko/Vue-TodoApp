@@ -5,28 +5,21 @@
       title="Task tracker"
       @toggle-add-task="toggleAddTask"
     />
-    <div v-if="showAddTask">
-      <AddTask @add-task="addTask" />
-    </div>
-    <Tasks
-      :tasks="tasks"
-      @delete-task="deleteTask"
-      @toggle-reminder="toggleReminder"
-    />
+
+    <router-view :showAddTask="showAddTask"></router-view>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
-import Tasks from "./components/Tasks.vue";
-import AddTask from "./components/AddTask.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "app",
-  components: { Header, Tasks, AddTask },
+  components: { Header, Footer },
   data() {
     return {
-      tasks: [],
       showAddTask: false,
     };
   },
@@ -34,47 +27,43 @@ export default {
     toggleAddTask() {
       this.showAddTask = !this.showAddTask;
     },
-    addTask(task) {
-      this.showAddTask = false;
-      this.tasks.push(task);
-    },
-    deleteTask(id) {
-      this.tasks = this.tasks.filter(function(task) {
-        return task.id !== id;
-      });
-    },
-    toggleReminder(id) {
-      this.tasks = this.tasks.map(function(task) {
-        return task.id === id ? { ...task, reminder: !task.reminder } : task;
-      });
-    },
-  },
-  created() {
-    this.tasks = [
-      {
-        id: 1,
-        text: "Doctors Appointment",
-        day: "March 1st at 2:30pm",
-        reminder: true,
-      },
-      {
-        id: 2,
-        text: "Meeting at school",
-        day: "March 3rd at 1:30pm",
-        reminder: true,
-      },
-      {
-        id: 3,
-        text: "Food Shopping",
-        day: "March 3rd  at 11:00am",
-        reminder: false,
-      },
-    ];
   },
 };
 </script>
 
 <style>
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #eee;
+  overflow-x: hidden;
+  display: block;
+  background-color: #b61924;
+}
+h3 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+//particles
+canvas {
+  display: block;
+  vertical-align: bottom;
+}
+#particles-js {
+  position: absolute;
+  width: 100vw;
+  height: auto;
+  inset: 0;
+  background-color: #b61924;
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+//particles
 * {
   padding: 0;
   margin: 0;
@@ -94,6 +83,9 @@ input:active {
   border: 1px solid rgb(99, 121, 139);
   border-radius: 5px;
   padding: 30px;
+  position: relative;
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.836);
 }
 .form-control-check input {
   flex: 2;
