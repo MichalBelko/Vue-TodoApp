@@ -29,6 +29,7 @@ export default {
   methods: {
     addTask(task) {
       this.tasks.push(task);
+      localStorage.setItem("newTask", JSON.stringify(this.tasks));
     },
     deleteTask(id) {
       this.tasks = this.tasks.filter(function(task) {
@@ -62,6 +63,8 @@ export default {
         reminder: false,
       },
     ];
+    const newTask = JSON.parse(localStorage.getItem("newTask"));
+    this.tasks = newTask;
   },
 };
 </script>
